@@ -1,69 +1,93 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>O Céu das 3 Garças</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;500&display=swap" rel="stylesheet">
 
 <style>
 
+/* BASE */
+
 body{
 margin:0;
 height:100vh;
 overflow:hidden;
 font-family:'Playfair Display', serif;
-background:radial-gradient(circle at center,#0c1c4d,#020611 70%);
+background:radial-gradient(circle at center,#081538,#01030a 70%);
 color:white;
 }
 
-/* estrelas fundo */
+/* FUNDO ESTRELAS SUAVE */
 
 .star-bg{
 position:absolute;
 width:100%;
 height:100%;
 background-image:radial-gradient(white 1px, transparent 1px);
-background-size:6px 6px;
-opacity:0.04;
-animation: drift 80s linear infinite;
+background-size:8px 8px;
+opacity:0.03;
+animation: drift 120s linear infinite;
 }
-  .main-text{
-z-index:5;
-  }
 
 @keyframes drift{
 from{transform:translateY(0);}
 to{transform:translateY(-200px);}
 }
 
-/* garças */
-
-.heron{
-position:absolute;
-font-size:60px;
-opacity:0.9;
-animation: float 8s ease-in-out infinite;
-}
-
-.center{top:40%;left:50%;transform:translate(-50%,-50%);}
-.left{top:50%;left:25%;}
-.right{top:50%;right:25%;}
-
-@keyframes float{
-50%{transform:translateY(-20px);}
-}
+/* TEXTO PRINCIPAL */
 
 .main-text{
 position:absolute;
-top:10%;
+top:12%;
 width:100%;
 text-align:center;
 font-size:24px;
 letter-spacing:2px;
 color:#ffffffcc;
+z-index:5;
 }
+
+/* GARÇAS PREMIUM */
+
+.heron{
+position:absolute;
+opacity:0.9;
+filter:drop-shadow(0 0 8px rgba(255,255,255,0.2));
+animation: breathe 12s ease-in-out infinite;
+}
+
+.center{
+top:45%;
+left:50%;
+transform:translate(-50%,-50%);
+}
+
+.left{
+top:55%;
+left:25%;
+}
+
+.right{
+top:55%;
+right:25%;
+}
+
+/* MOVIMENTO RESPIRAÇÃO */
+
+@keyframes breathe{
+
+0%{transform:translateY(0px);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0px);}
+
+}
+
+/* CONTADOR */
 
 .counter{
 position:absolute;
@@ -73,30 +97,8 @@ font-size:14px;
 color:#ffffffaa;
 }
 
-/* tela de escolha */
-
-#choiceScreen{
-position:absolute;
-width:100%;
-height:100%;
-display:flex;
-align-items:center;
-justify-content:center;
-background:radial-gradient(circle at center,#0c1c4d,#020611 70%);
-z-index:10;
-flex-direction:column;
-}
-
-button{
-margin:10px;
-padding:10px 20px;
-background:transparent;
-border:1px solid white;
-color:white;
-font-family:'Playfair Display', serif;
-}
-
 </style>
+
 </head>
 
 <body>
@@ -107,222 +109,30 @@ font-family:'Playfair Display', serif;
 Alguns nomes não desaparecem. Eles ficam no céu.
 </div>
 
-<div class="heron left">🕊️</div>
-<div class="heron center">🕊️</div>
-<div class="heron right">🕊️</div>
+<!-- GARÇA ESQUERDA -->
+<div class="heron left">
+<svg viewBox="0 0 100 100" width="80">
+<path d="M10 60 Q40 10 70 60 Q50 50 10 60" fill="white"/>
+</svg>
+</div>
+
+<!-- GARÇA CENTRAL -->
+<div class="heron center">
+<svg viewBox="0 0 100 100" width="100">
+<path d="M10 60 Q40 10 70 60 Q50 50 10 60" fill="white"/>
+</svg>
+</div>
+
+<!-- GARÇA DIREITA -->
+<div class="heron right">
+<svg viewBox="0 0 100 100" width="80">
+<path d="M10 60 Q40 10 70 60 Q50 50 10 60" fill="white"/>
+</svg>
+</div>
 
 <div class="counter">
 lugares ocupados: 00002 / 333333
 </div>
-
-<div id="choiceScreen">
-<div style="margin-bottom:20px;font-size:22px;letter-spacing:2px;">
-✦ Qual estrela guia você? ✦
-</div>
-<button onclick="chooseStar('cap')">Capricórnio</button>
-<button onclick="chooseStar('sag')">Sagitário</button>
-</div>
-
-<script>
-
-/* ESCOLHA */
-
-function chooseStar(type){
-
-let today = new Date().toDateString();
-
-localStorage.setItem("ceuStar", type);
-localStorage.setItem("ceuStarDate", today);
-
-checkUnionEvent(type, today);
-
-document.getElementById("choiceScreen").style.display="none";
-reactToStar(type);
-
-}
-
-/* REAÇÃO NORMAL */
-
-function reactToStar(type){
-
-let today = new Date();
-let month = today.getMonth();
-let day = today.getDate();
-
-let msg = document.createElement("div");
-
-msg.style.position="absolute";
-msg.style.top="20%";
-msg.style.width="100%";
-msg.style.textAlign="center";
-msg.style.fontSize="22px";
-msg.style.opacity="0";
-msg.style.transition="2s";
-
-/* dias sagrados */
-
-if(month === 11 && (day === 2 || day === 12 || day === 26)){
-
-msg.innerText="✦ o céu não escolhe lados hoje ✦";
-
-}else{
-
-if(type === "cap"){
-msg.innerText="✦ disciplina constrói o céu ✦";
-}
-
-if(type === "sag"){
-msg.innerText="✦ quem aponta o horizonte cria caminhos ✦";
-}
-
-}
-
-document.body.appendChild(msg);
-
-setTimeout(()=>{
-msg.style.opacity="1";
-},500);
-
-}
-
-/* UNIÃO */
-
-function checkUnionEvent(type, today){
-
-let otherStar = localStorage.getItem("otherStar");
-let otherDate = localStorage.getItem("otherStarDate");
-
-if(otherStar && otherDate === today && otherStar !== type){
-
-triggerUnion();
-
-localStorage.removeItem("otherStar");
-localStorage.removeItem("otherStarDate");
-
-}else{
-
-localStorage.setItem("otherStar", type);
-localStorage.setItem("otherStarDate", today);
-
-}
-
-}
-
-function triggerUnion(){
-
-let msg = document.createElement("div");
-
-msg.style.position="absolute";
-msg.style.top="30%";
-msg.style.width="100%";
-msg.style.textAlign="center";
-msg.style.fontSize="24px";
-msg.style.opacity="0";
-msg.style.transition="2s";
-
-msg.innerText="✦ quando dois caminhos se encontram, o céu se expande ✦";
-
-document.body.appendChild(msg);
-
-setTimeout(()=>{
-msg.style.opacity="1";
-},800);
-
-}
-
-/* CONSTELAÇÃO RARA */
-
-let rareTimer;
-let moved = false;
-
-function isSacredDay(){
-
-let today = new Date();
-let month = today.getMonth();
-let day = today.getDate();
-
-return (month === 11 && (day === 2 || day === 12 || day === 26));
-
-}
-
-function alreadySeen(){
-return localStorage.getItem("ceuRareSeen") === "true";
-}
-
-function markSeen(){
-localStorage.setItem("ceuRareSeen","true");
-}
-
-function startTimer(){
-
-rareTimer = setTimeout(()=>{
-
-if(!moved && isSacredDay() && !alreadySeen()){
-
-triggerRare();
-markSeen();
-
-}
-
-moved = false;
-
-},12000);
-
-}
-
-document.addEventListener("mousemove", ()=>{
-moved = true;
-clearTimeout(rareTimer);
-startTimer();
-});
-
-document.addEventListener("touchmove", ()=>{
-moved = true;
-clearTimeout(rareTimer);
-startTimer();
-});
-
-function triggerRare(){
-
-let rare = document.createElement("div");
-
-rare.style.position="absolute";
-rare.style.top="40%";
-rare.style.left="50%";
-rare.style.transform="translate(-50%,-50%)";
-rare.style.fontSize="22px";
-rare.style.letterSpacing="3px";
-rare.style.opacity="0";
-rare.style.transition="2s";
-
-rare.innerText="✦ 7G-12Δ-CEU ✦";
-
-document.body.appendChild(rare);
-
-setTimeout(()=>{
-rare.style.opacity="1";
-},200);
-
-setTimeout(()=>{
-rare.style.opacity="0";
-},12000);
-
-}
-
-startTimer();
-
-/* carregar escolha anterior */
-
-let savedStar = localStorage.getItem("ceuStar");
-
-if(savedStar){
-
-document.getElementById("choiceScreen").style.display="none";
-reactToStar(savedStar);
-
-}
-
-</script>
 
 </body>
 </html>
